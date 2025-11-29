@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Popoyo List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        /* TROPICAL BRUTALIST AESTHETIC CSS */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 16px; /* Larger base font for mobile readability */
+            color: #333;
+            background-color: #fafafa; /* Clean Sand/White */
+            margin: 0;
+            padding: 0;
+            overflow-y: scroll;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* Header Bar */
+        #header {
+            background-color: #2a9d8f; /* Pacific Teal */
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #logo {
+            font-weight: 900;
+            border: 2px solid white;
+            padding: 2px 6px;
+            margin-right: 10px;
+            font-size: 14px;
+            border-radius: 2px;
+        }
+
+        #title {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Navigation (Day Selector) */
+        #nav-bar {
+            padding: 15px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            cursor: pointer;
+            color: #2a9d8f; /* Match header */
+            font-weight: 600;
+            font-size: 14px;
+            user-select: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background: #eefcfb;
+        }
+        
+        .nav-btn:active {
+            background: #d0f0ed;
+        }
+
+        #current-day {
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #264653;
+        }
+
+        /* Content List */
+        #content {
+            padding: 0;
+            list-style: none;
+            margin-top: 0;
+        }
+
+        #list-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .event-row {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            background-color: white;
+            transition: background 0.1s;
+        }
+
+        .event-row:hover {
+            background-color: #f9f9f9;
+        }
+
+        .event-header {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap; /* Allows wrapping on very small screens */
+        }
+
+        .toggle-icon {
+            color: #bbb;
+            font-family: monospace;
+            font-size: 14px;
+            margin-right: 10px;
+            font-weight: bold;
+            width: 10px;
+            display: inline-block;
+        }
+
+        .event-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #264653;
+            margin-right: 8px;
+        }
+
+        .event-host {
+            font-size: 13px;
+            color: #888;
+            font-weight: 400;
+        }
+
+        .event-time {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #e76f51; /* Burnt Orange/Terracotta for time */
+            margin-right: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* Expanded Details */
+        .details {
+            display: none; /* Hidden by default */
+            margin-left: 25px; /* Indent to align with text */
+            margin-top: 8px;
+            font-size: 14px;
+            color: #555;
+            padding-bottom: 5px;
+            line-height: 1.5;
+        }
+
+        .details.open {
+            display: block;
+        }
+
+        .subtext {
+            margin-bottom: 10px;
+        }
+
+        .meta-links {
+            margin-top: 5px;
+        }
+
+        .meta-links a {
+            display: inline-block;
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .meta-links a:hover {
+            background-color: #e0e0e0;
+        }
+
+        .loading {
+            padding: 40px;
+            color: #888;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Footer */
+        #footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            background-color: #fafafa;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div id="header">
+        <div id="logo">PL</div>
+        <span id="title">The Popoyo List</span>
+    </div>
+
+    <!-- Navigation -->
+    <div id="nav-bar">
+        <div class="nav-btn" id="prev-btn">&larr; Prev</div>
+        <div id="current-day">Loading...</div>
+        <div class="nav-btn" id="next-btn">Next &rarr;</div>
+    </div>
+
+    <!-- Content -->
+    <div id="list-container">
+        <div class="loading" id="loading-msg">Fetching surf report...</div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">
+        Popoyo • Guasacate • Las Salinas<br>
+        <br>
+        Some subtext here.
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const SHEET_ID = '2PACX-1vSprBob0RDoyHJrTLAbM2M2NeU8Ih01SZmf31KzquTBtFuyPIJSs8HlEiHZ92zQYNuIbdKbm1Vo9jgT';
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv`;
+
+        const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        
+        let allEvents = [];
+        let viewDate = new Date();
+
+        // --- INIT ---
+        window.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+            
+            document.getElementById('prev-btn').addEventListener('click', () => changeDay(-1));
+            document.getElementById('next-btn').addEventListener('click', () => changeDay(1));
+        });
+
+        // --- DATA FETCHING ---
+        function fetchData() {
+            Papa.parse(CSV_URL, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    allEvents = results.data;
+                    render();
+                },
+                error: function(err) {
+                    console.error("Error fetching CSV:", err);
+                    document.getElementById('loading-msg').innerText = "Error loading data. Connect to WiFi and refresh.";
+                }
+            });
+        }
+
+        // --- LOGIC ---
+        function changeDay(offset) {
+            viewDate.setDate(viewDate.getDate() + offset);
+            render();
+        }
+
+        function getDayName(dateObj) {
+            return DAYS[dateObj.getDay()];
+        }
+
+        // Convert "14:00" -> "2PM" and "14:30" -> "2:30PM"
+        function formatTime(timeStr) {
+            if (!timeStr) return '';
+            
+            let clean = timeStr.trim();
+            // If already AM/PM, leave it alone
+            if (clean.toLowerCase().includes('m')) return clean.toUpperCase();
+
+            // Parse HH:MM
+            let parts = clean.split(':');
+            let h = parseInt(parts[0]);
+            let m = parts[1] ? parseInt(parts[1]) : 0;
+
+            if (isNaN(h)) return clean; // Fallback for weirder formats
+
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12;
+            h = h ? h : 12; // '0' becomes '12'
+
+            // If minutes are 0, return just the hour (e.g., 7PM)
+            if (m === 0) {
+                return `${h}${ampm}`;
+            } else {
+                // Otherwise format 7:30PM (pad minutes if needed)
+                let mStr = m < 10 ? '0' + m : m;
+                return `${h}:${mStr}${ampm}`;
+            }
+        }
+
+        // Helper for sorting
+        function normalizeTime(timeStr) {
+            if (!timeStr) return 9999; 
+            let str = timeStr.toLowerCase().trim();
+            let addHours = 0;
+            if (str.includes('pm') && !str.startsWith('12')) addHours = 12;
+            if (str.includes('am') && str.startsWith('12')) addHours = -12; 
+
+            let clean = str.replace(/[^0-9:]/g, '');
+            let parts = clean.split(':');
+            let h = parseInt(parts[0]);
+            let m = parts[1] ? parseInt(parts[1]) : 0;
+
+            if (isNaN(h)) return 9999;
+            return (h + addHours) * 60 + m;
+        }
+
+        // --- RENDER ---
+        function render() {
+            const container = document.getElementById('list-container');
+            const dayLabel = document.getElementById('current-day');
+            
+            const targetDay = getDayName(viewDate);
+            dayLabel.innerText = targetDay;
+
+            let dailyEvents = allEvents.filter(row => {
+                if (!row['Day of the week']) return false;
+                return row['Day of the week'].trim().toLowerCase() === targetDay.toLowerCase();
+            });
+
+            dailyEvents.sort((a, b) => {
+                return normalizeTime(a['Start']) - normalizeTime(b['Start']);
+            });
+
+            container.innerHTML = '';
+
+            if (dailyEvents.length === 0) {
+                container.innerHTML = `<div class="loading">No events found for ${targetDay}.<br>Go surf!</div>`;
+                return;
+            }
+
+            dailyEvents.forEach((evt, index) => {
+                const title = evt['Event Name'] || 'Untitled Event';
+                const host = evt['Host'] ? `@ ${evt['Host']}` : '';
+                
+                // Check for reservation (case-insensitive check for "true")
+                const needsRes = evt['Reservation'] && evt['Reservation'].trim().toLowerCase() === 'true';
+
+                // Format the start and end times
+                const start = evt['Start'] ? formatTime(evt['Start']) : '';
+                const endRaw = evt['End'] ? formatTime(evt['End']) : '';
+                
+                const subtext = evt['Subtext'] || '';
+                const end = endRaw ? `Until ${endRaw}` : '';
+                const mapLink = evt['Maps link'];
+                const webLink = evt['Website link'];
+
+                const row = document.createElement('div');
+                row.className = 'event-row';
+                
+                let html = `
+                    <div class="event-header">
+                        <span class="toggle-icon">+</span>
+                        ${start ? `<span class="event-time">${start}</span>` : ''}
+                        <span class="event-title">${title}</span>
+                        ${needsRes ? '<span title="Reservation Required" style="font-size: 14px; margin-right: 8px;">🎟️</span>' : ''}
+                        <span class="event-host">${host}</span>
+                    </div>
+                    <div class="details">
+                        ${needsRes ? '<div class="subtext" style="color: #e76f51; font-weight: bold;">⚠️ Reservation Required</div>' : ''}
+                        ${subtext ? `<div class="subtext">${subtext}</div>` : ''}
+                        ${end ? `<div class="subtext" style="color:#888; font-size:12px;">${end}</div>` : ''}
+                        <div class="meta-links">
+                            ${mapLink ? `<a href="${mapLink}" target="_blank">📍 Map</a>` : ''}
+                            ${webLink ? `<a href="${webLink}" target="_blank">🌐 Website</a>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                row.innerHTML = html;
+
+                row.addEventListener('click', () => {
+                    const details = row.querySelector('.details');
+                    const icon = row.querySelector('.toggle-icon');
+                    
+                    if (details.classList.contains('open')) {
+                        details.classList.remove('open');
+                        icon.innerHTML = '+'; 
+                        row.style.backgroundColor = "white";
+                    } else {
+                        details.classList.add('open');
+                        icon.innerHTML = '−'; // Minus sign
+                        row.style.backgroundColor = "#f0fdfc"; // Very subtle highlight
+                    }
+                });
+
+                container.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
