@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7C6GQC07E"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-D7C6GQC07E');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Popoyo List</title>
@@ -81,6 +91,14 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #264653;
+            text-align: center;
+        }
+        
+        #current-date-sub {
+            font-size: 12px;
+            color: #888;
+            font-weight: 500;
+            margin-top: 2px;
         }
 
         /* Content List */
@@ -93,6 +111,19 @@
         #list-container {
             max-width: 800px;
             margin: 0 auto;
+            padding-bottom: 40px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            padding: 20px 15px 5px 15px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #2a9d8f;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #eefcfb;
+            background-color: #fafafa;
         }
 
         .event-row {
@@ -213,20 +244,27 @@
     <!-- Navigation -->
     <div id="nav-bar">
         <div class="nav-btn" id="prev-btn">&larr; Prev</div>
-        <div id="current-day">Loading...</div>
+        <div style="text-align: center;">
+            <div id="current-day">Loading...</div>
+            <div id="current-date-sub"></div>
+        </div>
         <div class="nav-btn" id="next-btn">Next &rarr;</div>
     </div>
 
     <!-- Content -->
     <div id="list-container">
-        <div class="loading" id="loading-msg">Fetching surf report...</div>
+        <div class="loading" id="loading-msg">Fetching list...</div>
     </div>
 
     <!-- Footer -->
     <div id="footer">
         Popoyo • Guasacate • Las Salinas<br>
         <br>
-        Some subtext here.
+        <a href="https://wa.me/19022137109?text=Hey,%20I%20have%20an%20update%20for%20the%20Popoyo%20List!" 
+           target="_blank" 
+           style="border: 2px solid #2a9d8f; color: #2a9d8f; padding: 8px 16px; border-radius: 4px; text-decoration: none; display: inline-block; font-size: 14px; font-weight: 700;">
+           + Add Event / Contact
+        </a>
     </div>
 
     <script>
@@ -235,6 +273,7 @@
         const CSV_URL = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv`;
 
         const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         
         let allEvents = [];
         let viewDate = new Date();
@@ -273,36 +312,51 @@
             return DAYS[dateObj.getDay()];
         }
 
-        // Convert "14:00" -> "2PM" and "14:30" -> "2:30PM"
+        function isEventOnDay(rowVal, targetDate) {
+            if (!rowVal) return false;
+            const val = rowVal.trim();
+            
+            // 1. Check Recurring
+            const targetDayName = DAYS[targetDate.getDay()];
+            if (val.toLowerCase() === targetDayName.toLowerCase()) {
+                return true;
+            }
+
+            // 2. Check Specific Date
+            let parseStr = val;
+            if (/^\d{4}-\d{2}-\d{2}$/.test(parseStr)) {
+                parseStr += 'T00:00:00';
+            }
+            const eventDate = new Date(parseStr);
+            if (!isNaN(eventDate.getTime())) {
+                return eventDate.getFullYear() === targetDate.getFullYear() &&
+                       eventDate.getMonth() === targetDate.getMonth() &&
+                       eventDate.getDate() === targetDate.getDate();
+            }
+            return false;
+        }
+
         function formatTime(timeStr) {
             if (!timeStr) return '';
-            
-            let clean = timeStr.trim();
-            // If already AM/PM, leave it alone
+            let clean = timeStr.trim().replace(/\s*:\s*/g, ':');
             if (clean.toLowerCase().includes('m')) return clean.toUpperCase();
 
-            // Parse HH:MM
             let parts = clean.split(':');
             let h = parseInt(parts[0]);
             let m = parts[1] ? parseInt(parts[1]) : 0;
-
-            if (isNaN(h)) return clean; // Fallback for weirder formats
+            if (isNaN(h)) return clean; 
 
             const ampm = h >= 12 ? 'PM' : 'AM';
             h = h % 12;
-            h = h ? h : 12; // '0' becomes '12'
-
-            // If minutes are 0, return just the hour (e.g., 7PM)
+            h = h ? h : 12; 
             if (m === 0) {
                 return `${h}${ampm}`;
             } else {
-                // Otherwise format 7:30PM (pad minutes if needed)
                 let mStr = m < 10 ? '0' + m : m;
                 return `${h}:${mStr}${ampm}`;
             }
         }
 
-        // Helper for sorting
         function normalizeTime(timeStr) {
             if (!timeStr) return 9999; 
             let str = timeStr.toLowerCase().trim();
@@ -314,24 +368,89 @@
             let parts = clean.split(':');
             let h = parseInt(parts[0]);
             let m = parts[1] ? parseInt(parts[1]) : 0;
-
             if (isNaN(h)) return 9999;
             return (h + addHours) * 60 + m;
+        }
+
+        // Helper to generate Row HTML Element
+        function createEventRow(evt) {
+            const title = evt['Event Name'] || 'Untitled Event';
+            const host = evt['Host'] ? `@ ${evt['Host']}` : '';
+            
+            const needsResVal = evt['Reservation'] || evt['reservation'] || 'false';
+            const needsRes = needsResVal.trim().toLowerCase() === 'true';
+            const resInfo = evt['reso info'] || evt['Reso Info'] || evt['Reso info'] || '';
+            const price = evt['price'] || evt['Price'] || '';
+
+            const start = evt['Start'] ? formatTime(evt['Start']) : '';
+            const endRaw = evt['End'] ? formatTime(evt['End']) : '';
+            
+            const subtext = evt['Subtext'] || '';
+            const end = endRaw ? `Until ${endRaw}` : '';
+            const mapLink = evt['Maps link'];
+            const webLink = evt['Website link'];
+
+            const row = document.createElement('div');
+            row.className = 'event-row';
+            
+            let html = `
+                <div class="event-header">
+                    <span class="toggle-icon">+</span>
+                    ${start ? `<span class="event-time">${start}</span>` : ''}
+                    <span class="event-title">${title}</span>
+                    <span class="event-host">${host}</span>
+                </div>
+                <div class="details">
+                    ${needsRes ? `<div class="subtext" style="color: #e76f51; font-weight: bold;">⚠️ Reservation Required ${resInfo ? `<span style="font-weight:normal; color:#555; margin-left:5px;">${resInfo}</span>` : ''}</div>` : ''}
+                    ${price ? `<div class="subtext" style="color: #264653; font-weight: bold;">💰 ${price}</div>` : ''}
+                    ${subtext ? `<div class="subtext">${subtext}</div>` : ''}
+                    ${end ? `<div class="subtext" style="color:#888; font-size:12px;">${end}</div>` : ''}
+                    <div class="meta-links">
+                        ${mapLink ? `<a href="${mapLink}" target="_blank">📍 Map</a>` : ''}
+                        ${webLink ? `<a href="${webLink}" target="_blank">🌐 Website</a>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            row.innerHTML = html;
+
+            row.addEventListener('click', () => {
+                const details = row.querySelector('.details');
+                const icon = row.querySelector('.toggle-icon');
+                
+                if (details.classList.contains('open')) {
+                    details.classList.remove('open');
+                    icon.innerHTML = '+'; 
+                    row.style.backgroundColor = "white";
+                } else {
+                    details.classList.add('open');
+                    icon.innerHTML = '−'; 
+                    row.style.backgroundColor = "#f0fdfc"; 
+                }
+            });
+
+            return row;
         }
 
         // --- RENDER ---
         function render() {
             const container = document.getElementById('list-container');
             const dayLabel = document.getElementById('current-day');
+            const dateSub = document.getElementById('current-date-sub');
             
-            const targetDay = getDayName(viewDate);
-            dayLabel.innerText = targetDay;
+            const dayName = getDayName(viewDate);
+            const monthName = MONTHS[viewDate.getMonth()];
+            const dateNum = viewDate.getDate();
+            
+            dayLabel.innerText = dayName;
+            dateSub.innerText = `${monthName} ${dateNum}`;
 
+            // 1. Filter Events by Date
             let dailyEvents = allEvents.filter(row => {
-                if (!row['Day of the week']) return false;
-                return row['Day of the week'].trim().toLowerCase() === targetDay.toLowerCase();
+                return isEventOnDay(row['Date'], viewDate);
             });
 
+            // 2. Sort by Time
             dailyEvents.sort((a, b) => {
                 return normalizeTime(a['Start']) - normalizeTime(b['Start']);
             });
@@ -339,67 +458,52 @@
             container.innerHTML = '';
 
             if (dailyEvents.length === 0) {
-                container.innerHTML = `<div class="loading">No events found for ${targetDay}.<br>Go surf!</div>`;
+                container.innerHTML = `<div class="loading">No events found for ${dayName}.<br>Go surf!</div>`;
                 return;
             }
 
-            dailyEvents.forEach((evt, index) => {
-                const title = evt['Event Name'] || 'Untitled Event';
-                const host = evt['Host'] ? `@ ${evt['Host']}` : '';
-                
-                // Check for reservation (case-insensitive check for "true")
-                const needsRes = evt['Reservation'] && evt['Reservation'].trim().toLowerCase() === 'true';
+            // 3. Segment into Buckets
+            const mainEvents = [];
+            const foodEvents = [];
+            const yogaEvents = [];
 
-                // Format the start and end times
-                const start = evt['Start'] ? formatTime(evt['Start']) : '';
-                const endRaw = evt['End'] ? formatTime(evt['End']) : '';
-                
-                const subtext = evt['Subtext'] || '';
-                const end = endRaw ? `Until ${endRaw}` : '';
-                const mapLink = evt['Maps link'];
-                const webLink = evt['Website link'];
-
-                const row = document.createElement('div');
-                row.className = 'event-row';
-                
-                let html = `
-                    <div class="event-header">
-                        <span class="toggle-icon">+</span>
-                        ${start ? `<span class="event-time">${start}</span>` : ''}
-                        <span class="event-title">${title}</span>
-                        ${needsRes ? '<span title="Reservation Required" style="font-size: 14px; margin-right: 8px;">🎟️</span>' : ''}
-                        <span class="event-host">${host}</span>
-                    </div>
-                    <div class="details">
-                        ${needsRes ? '<div class="subtext" style="color: #e76f51; font-weight: bold;">⚠️ Reservation Required</div>' : ''}
-                        ${subtext ? `<div class="subtext">${subtext}</div>` : ''}
-                        ${end ? `<div class="subtext" style="color:#888; font-size:12px;">${end}</div>` : ''}
-                        <div class="meta-links">
-                            ${mapLink ? `<a href="${mapLink}" target="_blank">📍 Map</a>` : ''}
-                            ${webLink ? `<a href="${webLink}" target="_blank">🌐 Website</a>` : ''}
-                        </div>
-                    </div>
-                `;
-                
-                row.innerHTML = html;
-
-                row.addEventListener('click', () => {
-                    const details = row.querySelector('.details');
-                    const icon = row.querySelector('.toggle-icon');
-                    
-                    if (details.classList.contains('open')) {
-                        details.classList.remove('open');
-                        icon.innerHTML = '+'; 
-                        row.style.backgroundColor = "white";
-                    } else {
-                        details.classList.add('open');
-                        icon.innerHTML = '−'; // Minus sign
-                        row.style.backgroundColor = "#f0fdfc"; // Very subtle highlight
-                    }
-                });
-
-                container.appendChild(row);
+            dailyEvents.forEach(evt => {
+                const cat = (evt['Category'] || evt['category'] || '').trim().toLowerCase();
+                if (cat === 'yoga') {
+                    yogaEvents.push(evt);
+                } else if (cat === 'food') {
+                    foodEvents.push(evt);
+                } else {
+                    mainEvents.push(evt); // Everything else goes to top
+                }
             });
+
+            // 4. Render Segments
+            
+            // Helper to render a list chunk
+            const renderChunk = (list, headerText) => {
+                if (list.length === 0) return;
+                
+                if (headerText) {
+                    const header = document.createElement('div');
+                    header.className = 'section-header';
+                    header.innerText = headerText;
+                    container.appendChild(header);
+                }
+
+                list.forEach(evt => {
+                    container.appendChild(createEventRow(evt));
+                });
+            };
+
+            // Main Events (No Header)
+            renderChunk(mainEvents, null);
+
+            // Food (Header)
+            renderChunk(foodEvents, '🍔 Food & Drink Specials');
+
+            // Yoga (Header)
+            renderChunk(yogaEvents, '🧘 Yoga & Wellness');
         }
     </script>
 </body>
