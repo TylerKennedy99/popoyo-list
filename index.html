@@ -260,6 +260,10 @@
     <div id="footer">
         Popoyo • Guasacate • Las Salinas<br>
         <br>
+        <div style="margin-bottom: 15px; font-size: 13px; color: #888; line-height: 1.5; max-width: 300px; margin-left: auto; margin-right: auto;">
+            Help keep the community connected.<br>
+            Message me to report cancellations, add missing events, or just give feedback.
+        </div>
         <a href="https://wa.me/19022137109?text=Hey,%20I%20have%20an%20update%20for%20the%20Popoyo%20List!" 
            target="_blank" 
            style="border: 2px solid #2a9d8f; color: #2a9d8f; padding: 8px 16px; border-radius: 4px; text-decoration: none; display: inline-block; font-size: 14px; font-weight: 700;">
@@ -414,19 +418,39 @@
             
             row.innerHTML = html;
 
+            // TOGGLE LOGIC (Main Row Click)
             row.addEventListener('click', () => {
                 const details = row.querySelector('.details');
                 const icon = row.querySelector('.toggle-icon');
-                
-                if (details.classList.contains('open')) {
-                    details.classList.remove('open');
-                    icon.innerHTML = '+'; 
-                    row.style.backgroundColor = "white";
-                } else {
+                const wasOpen = details.classList.contains('open');
+
+                // 1. Close ALL currently open rows (Accordion behavior)
+                document.querySelectorAll('.details.open').forEach(el => {
+                    el.classList.remove('open');
+                    // Reset the icon and background of the row belonging to this details block
+                    const parentRow = el.closest('.event-row');
+                    if (parentRow) {
+                        parentRow.querySelector('.toggle-icon').innerHTML = '+';
+                        parentRow.style.backgroundColor = 'white';
+                    }
+                });
+
+                // 2. If the clicked row was NOT open, open it now
+                // (If it was open, step 1 closed it, and we do nothing, effectively toggling it off)
+                if (!wasOpen) {
                     details.classList.add('open');
                     icon.innerHTML = '−'; 
                     row.style.backgroundColor = "#f0fdfc"; 
                 }
+            });
+
+            // STOP PROPAGATION (Link Clicks)
+            // This prevents the row from closing when a user clicks 'Map' or 'Website'
+            const links = row.querySelectorAll('a');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
             });
 
             return row;
