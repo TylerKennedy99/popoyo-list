@@ -111,7 +111,7 @@
         #list-container {
             max-width: 800px;
             margin: 0 auto;
-            padding-bottom: 40px;
+            padding-bottom: 20px;
         }
 
         /* Section Headers */
@@ -215,6 +215,29 @@
             background-color: #e0e0e0;
         }
 
+        /* Services / Promo Section */
+        #services {
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            background: white;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .service-btn {
+            background-color: #264653; /* Darker Slate for differentiation */
+            color: white; 
+            padding: 10px 20px; 
+            border-radius: 4px; 
+            font-weight: bold; 
+            text-decoration: none; 
+            display: inline-block; 
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
         .loading {
             padding: 40px;
             color: #888;
@@ -256,6 +279,20 @@
         <div class="loading" id="loading-msg">Fetching list...</div>
     </div>
 
+    <!-- TRANSPORT / SERVICES SECTION -->
+    <div id="services">
+        <h3 style="margin: 0 0 10px 0; color: #264653; font-size: 16px;">🚐 Private Shuttles & Drivers</h3>
+        <p style="margin: 0 0 10px 0; font-size: 13px; color: #666; line-height: 1.4;">
+            Airport Transfers (MGA/ECI), Border Runs, or trips to anywhere.<br>
+            Secure your ride with our trusted local team.
+        </p>
+        <a href="https://wa.me/19022137109?text=Hi,%20I'm%20looking%20for%20a%20ride..." 
+           target="_blank" 
+           class="service-btn">
+           Check Rates / Book
+        </a>
+    </div>
+
     <!-- Footer -->
     <div id="footer">
         Popoyo • Guasacate • Las Salinas<br>
@@ -267,7 +304,7 @@
         <a href="https://wa.me/19022137109?text=Hey,%20I%20have%20an%20update%20for%20the%20Popoyo%20List!" 
            target="_blank" 
            style="border: 2px solid #2a9d8f; color: #2a9d8f; padding: 8px 16px; border-radius: 4px; text-decoration: none; display: inline-block; font-size: 14px; font-weight: 700;">
-           + Add Event / Contact
+           + Add Event / Feedback
         </a>
     </div>
 
@@ -436,7 +473,6 @@
                 });
 
                 // 2. If the clicked row was NOT open, open it now
-                // (If it was open, step 1 closed it, and we do nothing, effectively toggling it off)
                 if (!wasOpen) {
                     details.classList.add('open');
                     icon.innerHTML = '−'; 
@@ -445,7 +481,6 @@
             });
 
             // STOP PROPAGATION (Link Clicks)
-            // This prevents the row from closing when a user clicks 'Map' or 'Website'
             const links = row.querySelectorAll('a');
             links.forEach(link => {
                 link.addEventListener('click', (e) => {
