@@ -19,10 +19,10 @@
     <meta name="description" content="The definitive daily schedule for Popoyo, Guasacate, and Las Salinas. Find today's events, yoga classes, food specials, parties, and airport shuttles.">
     <meta name="keywords" content="Popoyo, Nicaragua, Things to do, Events, Yoga, Surf, Shuttles, Guasacate, Las Salinas, Party">
     
-    <!-- FAVICON (The Logo in the Tab) -->
+    <!-- FAVICON -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%232a9d8f%22/><rect x=%2210%22 y=%2210%22 width=%2280%22 height=%2280%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22/><text x=%2250%22 y=%2275%22 font-family=%22sans-serif%22 font-size=%2260%22 font-weight=%22900%22 fill=%22white%22 text-anchor=%22middle%22>PL</text></svg>">
 
-    <!-- SOCIAL SHARE TAGS (Open Graph) -->
+    <!-- SOCIAL SHARE TAGS -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://popoyolist.com/">
     <meta property="og:title" content="The Popoyo List | Things to Do in Popoyo">
@@ -33,28 +33,28 @@
         /* TROPICAL BRUTALIST AESTHETIC CSS */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            font-size: 16px; /* Larger base font for mobile readability */
+            font-size: 16px;
             color: #333;
-            background-color: #fafafa; /* Clean Sand/White */
+            background-color: #fafafa;
             margin: 0;
             padding: 0;
             overflow-y: scroll;
         }
 
-        a {
-            text-decoration: none;
-            color: #333;
-        }
+        a { text-decoration: none; color: #333; }
 
         /* Header Bar */
         #header {
-            background-color: #2a9d8f; /* Pacific Teal */
+            background-color: #2a9d8f;
             padding: 10px 15px;
             display: flex;
             align-items: center;
+            justify-content: space-between; /* Space for the services link */
             color: white;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+        #header-left { display: flex; align-items: center; }
 
         #logo {
             font-weight: 900;
@@ -72,7 +72,16 @@
             margin: 0;
         }
 
-        /* Navigation (Day Selector) */
+        .services-link {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+
+        /* Navigation */
         #nav-bar {
             padding: 15px;
             background-color: white;
@@ -87,7 +96,7 @@
 
         .nav-btn {
             cursor: pointer;
-            color: #2a9d8f; /* Match header */
+            color: #2a9d8f;
             font-weight: 600;
             font-size: 14px;
             user-select: none;
@@ -96,9 +105,7 @@
             background: #eefcfb;
         }
         
-        .nav-btn:active {
-            background: #d0f0ed;
-        }
+        .nav-btn:active { background: #d0f0ed; }
 
         #current-day {
             font-weight: 800;
@@ -117,11 +124,7 @@
         }
 
         /* Content List */
-        #content {
-            padding: 0;
-            list-style: none;
-            margin-top: 0;
-        }
+        #content { padding: 0; list-style: none; margin-top: 0; }
 
         #list-container {
             max-width: 800px;
@@ -149,14 +152,12 @@
             transition: background 0.1s;
         }
 
-        .event-row:hover {
-            background-color: #f9f9f9;
-        }
+        .event-row:hover { background-color: #f9f9f9; }
 
         .event-header {
             display: flex;
             align-items: baseline;
-            flex-wrap: wrap; /* Allows wrapping on very small screens */
+            flex-wrap: wrap; 
         }
 
         .toggle-icon {
@@ -185,16 +186,15 @@
         .event-time {
             font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
-            color: #e76f51; /* Burnt Orange/Terracotta for time */
+            color: #e76f51;
             margin-right: 12px;
             font-weight: 700;
             white-space: nowrap;
         }
 
-        /* Expanded Details */
         .details {
-            display: none; /* Hidden by default */
-            margin-left: 25px; /* Indent to align with text */
+            display: none; 
+            margin-left: 25px; 
             margin-top: 8px;
             font-size: 14px;
             color: #555;
@@ -202,17 +202,11 @@
             line-height: 1.5;
         }
 
-        .details.open {
-            display: block;
-        }
+        .details.open { display: block; }
 
-        .subtext {
-            margin-bottom: 10px;
-        }
+        .subtext { margin-bottom: 10px; }
 
-        .meta-links {
-            margin-top: 5px;
-        }
+        .meta-links { margin-top: 5px; }
 
         .meta-links a {
             display: inline-block;
@@ -226,61 +220,7 @@
             border: 1px solid #ddd;
         }
         
-        .meta-links a:hover {
-            background-color: #e0e0e0;
-        }
-
-        /* Services / Promo Section */
-        #services {
-            max-width: 800px;
-            margin: 0 auto 20px auto;
-            background: white;
-            border-top: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-            padding: 20px 15px;
-            text-align: center;
-        }
-
-        .service-btn {
-            background-color: #264653; /* Darker Slate for differentiation */
-            color: white; 
-            padding: 10px 20px; 
-            border-radius: 4px; 
-            font-weight: bold; 
-            text-decoration: none; 
-            display: inline-block; 
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .price-list {
-            list-style: none;
-            padding: 0;
-            margin: 15px auto;
-            max-width: 300px;
-            text-align: left;
-            font-size: 14px;
-            color: #444;
-            border: 1px solid #eee;
-            border-radius: 6px;
-            background: #fafafa;
-        }
-
-        .price-list li {
-            padding: 8px 12px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .price-list li:last-child {
-            border-bottom: none;
-        }
-
-        .price-tag {
-            font-weight: 700;
-            color: #264653;
-        }
+        .meta-links a:hover { background-color: #e0e0e0; }
 
         .loading {
             padding: 40px;
@@ -304,8 +244,11 @@
 
     <!-- Header -->
     <div id="header">
-        <div id="logo">PL</div>
-        <h1 id="title">The Popoyo List</h1>
+        <div id="header-left">
+            <div id="logo">PL</div>
+            <h1 id="title">The Popoyo List</h1>
+        </div>
+        <a href="services.html" class="services-link">🚐 Services</a>
     </div>
 
     <!-- Navigation -->
@@ -323,35 +266,13 @@
         <div class="loading" id="loading-msg">Fetching list...</div>
     </div>
 
-    <!-- TRANSPORT / SERVICES SECTION -->
-    <div id="services">
-        <h3 style="margin: 0 0 5px 0; color: #264653; font-size: 16px;">🚐 Private Shuttles & Drivers</h3>
-        <p style="margin: 0 0 10px 0; font-size: 12px; color: #888;">
-            Airport Transfers (MGA/ECI), Border Runs, or trips to anywhere.<br>
-            Secure your ride with our trusted local team.
-        </p>
-
-        <ul class="price-list">
-            <li><span>Managua (MGA)</span> <span class="price-tag">$90</span></li>
-            <li><span>Granada</span> <span class="price-tag">$50</span></li>
-            <li><span>San Juan Del Sur</span> <span class="price-tag">$45</span></li>
-            <li><span>Rivas / San Jorge</span> <span class="price-tag">$30 - $35</span></li>
-        </ul>
-
-        <a href="https://wa.me/19022137109?text=Hi,%20I'm%20looking%20for%20a%20shuttle..." 
-           target="_blank" 
-           class="service-btn">
-           Book Shuttle via WhatsApp
-        </a>
-    </div>
-
     <!-- Footer -->
     <div id="footer">
         Popoyo • Guasacate • Las Salinas<br>
         <br>
         <div style="margin-bottom: 15px; font-size: 13px; color: #888; line-height: 1.5; max-width: 300px; margin-left: auto; margin-right: auto;">
             Help keep the community connected.<br>
-            Message me using the link below to report cancellations, add missing events, or just give feedback.
+            Message me to report cancellations, add missing events, or just give feedback.
         </div>
         <a href="https://wa.me/19022137109?text=Hey,%20I%20have%20an%20update%20for%20the%20Popoyo%20List!" 
            target="_blank" 
