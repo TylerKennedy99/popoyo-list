@@ -13,7 +13,24 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Popoyo List</title>
+    
+    <!-- SEO METADATA -->
+    <title>The Popoyo List | Things to Do in Popoyo, Nicaragua</title>
+    <meta name="description" content="The definitive daily schedule for Popoyo, Guasacate, and Las Salinas. Find today's events, yoga classes, food specials, parties, and airport shuttles.">
+    <meta name="keywords" content="Popoyo, Nicaragua, Things to do, Events, Yoga, Surf, Shuttles, Guasacate, Las Salinas, Party">
+    
+    <!-- FAVICON (The Logo in the Tab) -->
+    <!-- This draws your PL logo using code so you don't need to upload an image file -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%232a9d8f%22/><rect x=%2210%22 y=%2210%22 width=%2280%22 height=%2280%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22/><text x=%2250%22 y=%2275%22 font-family=%22sans-serif%22 font-size=%2260%22 font-weight=%22900%22 fill=%22white%22 text-anchor=%22middle%22>PL</text></svg>">
+
+    <!-- SOCIAL SHARE TAGS (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://popoyolist.com/">
+    <meta property="og:title" content="The Popoyo List | Things to Do in Popoyo">
+    <meta property="og:description" content="The definitive daily schedule for Popoyo. Events, yoga, food specials, and shuttles.">
+    <!-- Note: Once you have a logo image hosted, put the link here for a nice preview image -->
+    <!-- <meta property="og:image" content="https://popoyolist.com/assets/preview.jpg"> -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         /* TROPICAL BRUTALIST AESTHETIC CSS */
@@ -51,10 +68,12 @@
             border-radius: 2px;
         }
 
-        #title {
+        /* Changed ID to H1 for SEO, kept styling identical */
+        h1#title {
             font-weight: 700;
             font-size: 18px;
             letter-spacing: -0.5px;
+            margin: 0; /* Reset browser default H1 margin */
         }
 
         /* Navigation (Day Selector) */
@@ -261,7 +280,7 @@
     <!-- Header -->
     <div id="header">
         <div id="logo">PL</div>
-        <span id="title">The Popoyo List</span>
+        <h1 id="title">The Popoyo List</h1>
     </div>
 
     <!-- Navigation -->
