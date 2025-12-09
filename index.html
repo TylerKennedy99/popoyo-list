@@ -20,7 +20,6 @@
     <meta name="keywords" content="Popoyo, Nicaragua, Things to do, Events, Yoga, Surf, Shuttles, Guasacate, Las Salinas, Party">
     
     <!-- FAVICON (The Logo in the Tab) -->
-    <!-- This draws your PL logo using code so you don't need to upload an image file -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%232a9d8f%22/><rect x=%2210%22 y=%2210%22 width=%2280%22 height=%2280%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22/><text x=%2250%22 y=%2275%22 font-family=%22sans-serif%22 font-size=%2260%22 font-weight=%22900%22 fill=%22white%22 text-anchor=%22middle%22>PL</text></svg>">
 
     <!-- SOCIAL SHARE TAGS (Open Graph) -->
@@ -28,8 +27,6 @@
     <meta property="og:url" content="https://popoyolist.com/">
     <meta property="og:title" content="The Popoyo List | Things to Do in Popoyo">
     <meta property="og:description" content="The definitive daily schedule for Popoyo. Events, yoga, food specials, and shuttles.">
-    <!-- Note: Once you have a logo image hosted, put the link here for a nice preview image -->
-    <!-- <meta property="og:image" content="https://popoyolist.com/assets/preview.jpg"> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
@@ -68,12 +65,11 @@
             border-radius: 2px;
         }
 
-        /* Changed ID to H1 for SEO, kept styling identical */
         h1#title {
             font-weight: 700;
             font-size: 18px;
             letter-spacing: -0.5px;
-            margin: 0; /* Reset browser default H1 margin */
+            margin: 0;
         }
 
         /* Navigation (Day Selector) */
@@ -257,6 +253,35 @@
             margin-top: 10px;
         }
 
+        .price-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px auto;
+            max-width: 300px;
+            text-align: left;
+            font-size: 14px;
+            color: #444;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+
+        .price-list li {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .price-list li:last-child {
+            border-bottom: none;
+        }
+
+        .price-tag {
+            font-weight: 700;
+            color: #264653;
+        }
+
         .loading {
             padding: 40px;
             color: #888;
@@ -300,15 +325,23 @@
 
     <!-- TRANSPORT / SERVICES SECTION -->
     <div id="services">
-        <h3 style="margin: 0 0 10px 0; color: #264653; font-size: 16px;">🚐 Private Shuttles & Drivers</h3>
-        <p style="margin: 0 0 10px 0; font-size: 13px; color: #666; line-height: 1.4;">
+        <h3 style="margin: 0 0 5px 0; color: #264653; font-size: 16px;">🚐 Private Shuttles & Drivers</h3>
+        <p style="margin: 0 0 10px 0; font-size: 12px; color: #888;">
             Airport Transfers (MGA/ECI), Border Runs, or trips to anywhere.<br>
             Secure your ride with our trusted local team.
         </p>
-        <a href="https://wa.me/19022137109?text=Hi,%20I'm%20looking%20for%20a%20ride..." 
+
+        <ul class="price-list">
+            <li><span>Managua (MGA)</span> <span class="price-tag">$90</span></li>
+            <li><span>Granada</span> <span class="price-tag">$50</span></li>
+            <li><span>San Juan Del Sur</span> <span class="price-tag">$45</span></li>
+            <li><span>Rivas / San Jorge</span> <span class="price-tag">$30 - $35</span></li>
+        </ul>
+
+        <a href="https://wa.me/19022137109?text=Hi,%20I'm%20looking%20for%20a%20shuttle..." 
            target="_blank" 
            class="service-btn">
-           Check Rates / Book
+           Book Shuttle via WhatsApp
         </a>
     </div>
 
@@ -318,12 +351,12 @@
         <br>
         <div style="margin-bottom: 15px; font-size: 13px; color: #888; line-height: 1.5; max-width: 300px; margin-left: auto; margin-right: auto;">
             Help keep the community connected.<br>
-            Message me to report cancellations, add missing events, or just give feedback.
+            Message me using the link below to report cancellations, add missing events, or just give feedback.
         </div>
         <a href="https://wa.me/19022137109?text=Hey,%20I%20have%20an%20update%20for%20the%20Popoyo%20List!" 
            target="_blank" 
            style="border: 2px solid #2a9d8f; color: #2a9d8f; padding: 8px 16px; border-radius: 4px; text-decoration: none; display: inline-block; font-size: 14px; font-weight: 700;">
-           + Add Event / Feedback
+           + Get Your Event Listed
         </a>
     </div>
 
