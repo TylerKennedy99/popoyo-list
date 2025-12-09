@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D7C6GQC07E"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-D7C6GQC07E');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | The Popoyo List</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%232a9d8f%22/><rect x=%2210%22 y=%2210%22 width=%2280%22 height=%2280%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22/><text x=%2250%22 y=%2275%22 font-family=%22sans-serif%22 font-size=%2260%22 font-weight=%22900%22 fill=%22white%22 text-anchor=%22middle%22>PL</text></svg>">
+
+    <style>
+        /* TROPICAL BRUTALIST AESTHETIC CSS (Matched to Index) */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+            overflow-y: scroll;
+        }
+
+        a { text-decoration: none; color: #333; }
+
+        /* Header Bar (Identical to Index) */
+        #header {
+            background-color: #2a9d8f;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #header-left { display: flex; align-items: center; }
+
+        #logo {
+            font-weight: 900;
+            border: 2px solid white;
+            padding: 2px 6px;
+            margin-right: 10px;
+            font-size: 14px;
+            border-radius: 2px;
+        }
+
+        h1#title {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        /* Header Button Style (Matched) */
+        .header-link {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+
+        /* Sub-Navigation Bar (Sticky) */
+        #nav-bar {
+            padding: 15px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: center; /* Center the title */
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        #page-label {
+            font-weight: 800;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #264653;
+            text-align: center;
+        }
+
+        /* Container */
+        #services-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Cards */
+        .service-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .service-btn {
+            background-color: #264653; 
+            color: white; 
+            padding: 12px 20px; 
+            border-radius: 4px; 
+            font-weight: bold; 
+            text-decoration: none; 
+            display: inline-block; 
+            font-size: 15px;
+            margin-top: 10px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 8px;
+            font-size: 13px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            border: 1px solid #ddd;
+            color: #555;
+        }
+
+        .price-list {
+            list-style: none;
+            padding: 0;
+            margin: 15px auto;
+            text-align: left;
+            font-size: 14px;
+            color: #444;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+
+        .price-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-list li:last-child { border-bottom: none; }
+
+        .price-tag {
+            font-weight: 700;
+            color: #264653;
+        }
+
+        /* Footer */
+        #footer {
+            padding: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header (Identical to Index) -->
+    <div id="header">
+        <div id="header-left">
+            <div id="logo">PL</div>
+            <h1 id="title">The Popoyo List</h1>
+        </div>
+        <a href="index.html" class="header-link">← Events</a>
+    </div>
+
+    <!-- Navigation Bar (Sticky Title) -->
+    <div id="nav-bar">
+        <div id="page-label">Services & Essentials</div>
+    </div>
+
+    <!-- Content -->
+    <div id="services-container">
+        
+        <!-- Private Shuttles -->
+        <div class="service-card">
+            <h3 style="margin: 0 0 5px 0; color: #264653; font-size: 18px;">🚐 Private Shuttles & Drivers</h3>
+            <p style="margin: 0 0 15px 0; font-size: 13px; color: #666; line-height: 1.4;">
+                Airport Transfers (MGA/ECI), Border Runs, or trips to anywhere.<br>
+                Secure your ride with our trusted local team.
+            </p>
+
+            <ul class="price-list">
+                <li><span>Managua (MGA)</span> <span class="price-tag">$90</span></li>
+                <li><span>Granada</span> <span class="price-tag">$50</span></li>
+                <li><span>San Juan Del Sur</span> <span class="price-tag">$45</span></li>
+                <li><span>Rivas / San Jorge</span> <span class="price-tag">$30 - $35</span></li>
+            </ul>
+
+            <a href="https://wa.me/19022137109?text=Hi,%20I'm%20looking%20for%20a%20shuttle..." 
+               target="_blank" 
+               class="service-btn">
+               Book Shuttle via WhatsApp
+            </a>
+        </div>
+
+        <!-- Popoyo Delivery -->
+        <div class="service-card" style="border-top: 4px solid #e76f51;">
+            <h3 style="margin: 0 0 5px 0; color: #e76f51; font-size: 18px;">🛵 Popoyo Delivery</h3>
+            <p style="margin: 0 0 15px 0; font-size: 13px; color: #666; line-height: 1.4;">
+                Food delivery, grocery runs, and local taxis.<br>
+                Popoyo's premier delivery service.<br><br>
+                📱 Download the app on iOS & Android<br>
+                <span style="font-size:12px; color:#888;">(Best User Experience)</span>
+            </p>
+            <a href="https://wa.me/50585919494?text=Hola,%20I%20would%20like%20to%20order..." 
+               target="_blank" 
+               class="service-btn" 
+               style="background-color: #e76f51;">
+               Contact via WhatsApp
+            </a>
+            
+            <div class="social-links">
+                <a href="https://www.instagram.com/popoyodelivery/?hl=en" target="_blank" class="social-btn">Instagram</a>
+                <a href="https://www.facebook.com/popoyodelivery/" target="_blank" class="social-btn">Facebook</a>
+            </div>
+        </div>
+
+        <!-- ATM Locations -->
+        <div class="service-card">
+            <h3 style="margin: 0 0 15px 0; color: #264653; font-size: 18px;">🏧 ATM Locations</h3>
+            <ul class="price-list">
+                <li>
+                    <div>
+                        <span style="font-weight:700; display:block;">Las Salinas (BAC)</span>
+                        <span style="font-size:11px; color:#888;">Main intersection.</span>
+                    </div>
+                    <a href="https://www.google.com/maps/place/ATM+BAC+Credomatic/@11.4765925,-86.1165381,882m/data=!3m2!1e3!4b1!4m6!3m5!1s0x8f742f000df03dcf:0xe1f1ef10bdb3aa48!8m2!3d11.4765925!4d-86.1139632!16s%2Fg%2F11vwxqlbrj?entry=ttu&g_ep=EgoyMDI1MTIwMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" style="font-size:12px; text-decoration:underline; color:#2a9d8f;">Map</a>
+                </li>
+                <li>
+                    <div>
+                        <span style="font-weight:700; display:block;">Guasacate Center</span>
+                        <span style="font-size:11px; color:#888;">In front of ESC Properties gate.</span>
+                    </div>
+                    <a href="https://www.google.com/maps/place/11%C2%B028'40.3%22N+86%C2%B007'02.9%22W/@11.477868,-86.117463,882m/data=!3m2!1e3!4b1!4m4!3m3!8m2!3d11.477868!4d-86.117463?entry=ttu&g_ep=EgoyMDI1MTIwMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" style="font-size:12px; text-decoration:underline; color:#2a9d8f;">Map</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div id="footer">
+        Popoyo • Guasacate • Las Salinas<br><br>
+        <a href="index.html" style="text-decoration: underline;">Back to Events</a>
+    </div>
+
+</body>
+</html>
