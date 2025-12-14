@@ -32,47 +32,72 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         /* TROPICAL BRUTALIST AESTHETIC CSS */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             font-size: 16px;
-            color: #333;
+            color: #264653;
             background-color: #fafafa;
             margin: 0;
             padding: 0;
             overflow-y: scroll;
+            line-height: 1.6;
         }
 
         a {
             text-decoration: none;
-            color: #333;
+            color: inherit;
+        }
+
+        a:hover {
+            opacity: 0.8;
         }
 
         /* Header Bar */
         #header {
-            background-color: #2a9d8f; /* Pacific Teal */
-            padding: 10px 15px;
+            background: linear-gradient(135deg, #2a9d8f 0%, #238a7d 100%);
+            padding: 11px 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(42, 157, 143, 0.15);
+            position: relative;
         }
 
-        #header-left { display: flex; align-items: center; }
+        #header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        #header-left { 
+            display: flex; 
+            align-items: center; 
+        }
 
         #logo {
             font-weight: 900;
-            border: 2px solid white;
-            padding: 2px 6px;
-            margin-right: 10px;
-            font-size: 14px;
-            border-radius: 2px;
+            border: 2.5px solid white;
+            padding: 4px 8px;
+            margin-right: 12px;
+            font-size: 15px;
+            border-radius: 3px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h1#title {
             font-weight: 700;
-            font-size: 18px;
-            letter-spacing: -0.5px;
+            font-size: 19px;
+            letter-spacing: -0.3px;
             margin: 0;
         }
 
@@ -80,53 +105,70 @@
             color: white;
             font-size: 13px;
             font-weight: 600;
-            background: rgba(255,255,255,0.2);
-            padding: 6px 10px;
-            border-radius: 4px;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .services-link:hover {
+            background: rgba(255,255,255,0.35);
         }
 
         /* Navigation (Day Selector) */
         #nav-bar {
             padding: 15px;
             background-color: white;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #e5e5e5;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .nav-btn {
             cursor: pointer;
-            color: #2a9d8f; /* Match header */
+            color: #2a9d8f;
             font-weight: 600;
             font-size: 14px;
             user-select: none;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 6px;
             background: #eefcfb;
+            border: 1px solid transparent;
+        }
+
+        .nav-btn:hover {
+            background: #d0f0ed;
         }
         
         .nav-btn:active {
-            background: #d0f0ed;
+            background: #b8e5de;
+        }
+        
+        .nav-btn.hidden {
+            visibility: hidden;
+            pointer-events: none;
         }
 
         #current-day {
             font-weight: 800;
-            font-size: 16px;
+            font-size: 17px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             color: #264653;
             text-align: center;
         }
         
         #current-date-sub {
-            font-size: 12px;
-            color: #888;
+            font-size: 13px;
+            color: #666;
             font-weight: 500;
-            margin-top: 2px;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
         }
 
         /* Content List */
@@ -139,80 +181,103 @@
         #list-container {
             max-width: 800px;
             margin: 0 auto;
-            padding-bottom: 20px;
+            padding: 15px 0 30px 0;
         }
 
         /* Section Headers */
         .section-header {
-            padding: 20px 15px 5px 15px;
-            font-size: 13px;
+            padding: 20px 15px 8px 15px;
+            font-size: 12px;
             font-weight: 700;
             color: #2a9d8f;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             border-bottom: 2px solid #eefcfb;
             background-color: #fafafa;
+            margin-top: 4px;
         }
 
         .event-row {
-            padding: 12px 15px;
+            padding: 13px 15px;
             cursor: pointer;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #f0f0f0;
             background-color: white;
-            transition: background 0.1s;
+            position: relative;
+        }
+
+        .event-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: transparent;
         }
 
         .event-row:hover {
-            background-color: #f9f9f9;
+            background-color: #fafafa;
+            border-left: 3px solid #2a9d8f;
+        }
+
+        .event-row:hover::before {
+            background: #2a9d8f;
         }
 
         .event-header {
             display: flex;
             align-items: baseline;
-            flex-wrap: wrap; /* Allows wrapping on very small screens */
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .toggle-icon {
             color: #bbb;
             font-family: monospace;
-            font-size: 14px;
-            margin-right: 10px;
+            font-size: 16px;
+            margin-right: 8px;
             font-weight: bold;
-            width: 10px;
+            width: 14px;
             display: inline-block;
         }
 
+        .event-row:hover .toggle-icon {
+            color: #2a9d8f;
+        }
+
         .event-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
             color: #264653;
             margin-right: 8px;
+            line-height: 1.4;
         }
 
         .event-host {
-            font-size: 13px;
-            color: #888;
+            font-size: 14px;
+            color: #666;
             font-weight: 400;
         }
 
         .event-time {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            color: #e76f51; /* Burnt Orange/Terracotta for time */
+            font-size: 15px;
+            color: #e76f51;
             margin-right: 12px;
             font-weight: 700;
             white-space: nowrap;
+            letter-spacing: 0.3px;
         }
 
         /* Expanded Details */
         .details {
-            display: none; /* Hidden by default */
-            margin-left: 25px; /* Indent to align with text */
-            margin-top: 8px;
+            display: none;
+            margin-left: 22px;
+            margin-top: 10px;
             font-size: 14px;
             color: #555;
-            padding-bottom: 5px;
-            line-height: 1.5;
+            padding-bottom: 6px;
+            line-height: 1.7;
         }
 
         .details.open {
@@ -221,54 +286,115 @@
 
         .subtext {
             margin-bottom: 10px;
+            line-height: 1.6;
         }
 
         .meta-links {
-            margin-top: 5px;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .meta-links a {
             display: inline-block;
-            background-color: #f0f0f0;
-            color: #333;
-            padding: 4px 8px;
-            border-radius: 4px;
+            background-color: #f5f5f5;
+            color: #264653;
+            padding: 6px 12px;
+            border-radius: 5px;
             font-size: 12px;
             font-weight: 600;
-            margin-right: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #e0e0e0;
         }
         
         .meta-links a:hover {
-            background-color: #e0e0e0;
+            background-color: #2a9d8f;
+            color: white;
+            border-color: #2a9d8f;
         }
 
         .loading {
-            padding: 40px;
+            padding: 60px 20px;
             color: #888;
             text-align: center;
             font-style: italic;
+            font-size: 15px;
         }
 
         /* Footer */
         #footer {
-            padding: 30px;
+            padding: 40px 20px;
             text-align: center;
-            font-size: 12px;
-            color: #aaa;
+            font-size: 13px;
+            color: #888;
             background-color: #fafafa;
             border-top: 1px solid #eee;
+            margin-top: 20px;
         }
         
         /* SEO Text Block */
         #seo-block {
-            max-width: 600px;
-            margin: 0 auto 20px auto;
+            max-width: 650px;
+            margin: 30px auto 40px auto;
             padding: 0 20px;
             text-align: center;
-            font-size: 11px;
-            color: #999;
-            line-height: 1.6;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        #seo-block strong {
+            color: #264653;
+            font-weight: 600;
+        }
+
+        /* Footer Button */
+        #footer a {
+            border: 2px solid #2a9d8f;
+            color: #2a9d8f;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 600px) {
+            #header {
+                padding: 12px 15px;
+            }
+
+            h1#title {
+                font-size: 17px;
+            }
+
+            #nav-bar {
+                padding: 15px;
+            }
+
+            .nav-btn {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+
+            #current-day {
+                font-size: 15px;
+            }
+
+            .event-row {
+                padding: 14px 15px;
+            }
+
+            .event-title {
+                font-size: 16px;
+            }
+
+            .section-header {
+                padding: 20px 15px 8px 15px;
+            }
         }
 
         /* Mobile Responsive Adjustments */
@@ -379,8 +505,27 @@
         }
 
         // --- LOGIC ---
+        function isToday(date) {
+            const today = new Date();
+            return date.getFullYear() === today.getFullYear() &&
+                   date.getMonth() === today.getMonth() &&
+                   date.getDate() === today.getDate();
+        }
+
         function changeDay(offset) {
-            viewDate.setDate(viewDate.getDate() + offset);
+            const newDate = new Date(viewDate);
+            newDate.setDate(newDate.getDate() + offset);
+            
+            // Prevent going back before today
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            newDate.setHours(0, 0, 0, 0);
+            
+            if (newDate < today) {
+                return; // Don't allow going back before today
+            }
+            
+            viewDate = newDate;
             render();
         }
 
@@ -502,8 +647,11 @@
                     // Reset the icon and background of the row belonging to this details block
                     const parentRow = el.closest('.event-row');
                     if (parentRow) {
-                        parentRow.querySelector('.toggle-icon').innerHTML = '+';
+                        const parentIcon = parentRow.querySelector('.toggle-icon');
+                        parentIcon.innerHTML = '+';
+                        parentIcon.style.color = '#bbb';
                         parentRow.style.backgroundColor = 'white';
+                        parentRow.style.borderLeft = 'none';
                     }
                 });
 
@@ -511,7 +659,9 @@
                 if (!wasOpen) {
                     details.classList.add('open');
                     icon.innerHTML = '−'; 
-                    row.style.backgroundColor = "#f0fdfc"; 
+                    icon.style.color = '#2a9d8f';
+                    row.style.backgroundColor = "#f0fdfc";
+                    row.style.borderLeft = "3px solid #2a9d8f";
                 }
             });
 
@@ -531,6 +681,7 @@
             const container = document.getElementById('list-container');
             const dayLabel = document.getElementById('current-day');
             const dateSub = document.getElementById('current-date-sub');
+            const prevBtn = document.getElementById('prev-btn');
             
             const dayName = getDayName(viewDate);
             const monthName = MONTHS[viewDate.getMonth()];
@@ -538,6 +689,13 @@
             
             dayLabel.innerText = dayName;
             dateSub.innerText = `${monthName} ${dateNum}`;
+            
+            // Hide prev button if viewing today
+            if (isToday(viewDate)) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
 
             // 1. Filter Events by Date
             let dailyEvents = allEvents.filter(row => {
@@ -552,7 +710,7 @@
             container.innerHTML = '';
 
             if (dailyEvents.length === 0) {
-                container.innerHTML = `<div class="loading">No events found for ${dayName}.<br>Go surf!</div>`;
+                container.innerHTML = `<div class="loading">No events found for ${dayName}.<br><span style="color: #2a9d8f; font-weight: 600;">🌊 Go surf!</span></div>`;
                 return;
             }
 

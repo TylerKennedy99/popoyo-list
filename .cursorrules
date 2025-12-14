@@ -1,0 +1,64 @@
+# Project Context: The Popoyo List
+
+## Project Overview
+You are building `popoyolist.com`, a hyper-local event aggregator and digital concierge for Popoyo, Guasacate, and Las Salinas, Nicaragua.
+The founder is a CS grad interning at a local hotel.
+The goal is to be the definitive "Infrastructure" for tourists, replacing outdated chalkboards and confused hotel staff.
+
+## Tech Stack (Strict Constraints)
+- **Frontend:** Single-file HTML/CSS/Vanilla JS (`index.html`, `services.html`).
+- **No Build Tools:** Do NOT suggest npm, webpack, React, or Node.js. This site runs directly in the browser via GitHub Pages.
+- **Database:** Google Sheets published as CSV. We fetch data client-side using `PapaParse`.
+- **Hosting:** GitHub Pages (Custom domain: `popoyolist.com`).
+- **Analytics:** Google Analytics 4 (GA4) with UTM tracking for physical QR codes (e.g., `?utm_source=bathroom`).
+
+## Design System 
+- **Aesthetic:** High utility, low bandwidth. Think "Hacker News for Surfers."
+- **Colors:**
+  - Primary Teal: `#2a9d8f` (Header, Buttons)
+  - Dark Slate: `#264653` (Headings, Text)
+  - Accent Orange: `#e76f51` (Alerts, Delivery Button)
+  - Background: `#fafafa` (Clean White/Sand)
+  - WhatsApp Green: `#25D366`
+- **Typography:** System fonts only (San Francisco/Helvetica/Arial). No external font imports to load fast on 3G.
+- **Components:**
+  - **Cards:** Clean white boxes with slight shadows.
+  - **Accordion:** Event rows expand on click to show details/maps.
+  - **Sticky Header:** Always visible for navigation.
+
+## Business Model & Strategy
+- **Primary Revenue:** **Private Shuttle Commissions.**
+  - Model: "Ledger & Leash." We act as the dispatcher. Tourist pays driver 100% cash. We track rides. Driver pays commission ($15/ride) when debt hits $50.
+  - Target: Airport Transfers (MGA/ECI) and Border Runs.
+  - **Constraint:** We do NOT do local $5 taxi rides (low margin).
+- **Secondary Revenue:**
+  - **Popoyo Delivery:** We promote them as the "Premier Delivery Service" (Food/Grocery).
+- **User Acquisition:**
+  - Physical QR Cards in hotels/Airbnbs.
+  - "Whale Hunting" property managers for distribution.
+  - SEO targeting "Things to do in Popoyo".
+
+## Code Rules & specific Logic
+1. **Event Logic (`index.html`):**
+   - **Date Filtering:** Support both specific dates (`2025/12/01`) and recurring days (`Monday`).
+   - **Sorting:** Sort by Time (AM to PM).
+   - **Segmentation:** Display Main Events first, then Food Specials, then Yoga.
+   - **Accordion:** Clicking a row expands details. Clicking another row auto-closes the previous one.
+2. **Services Logic (`services.html`):**
+   - **Shuttles:** Display estimated prices (MGA $90, etc). Button opens WhatsApp with pre-filled message: "Hi, I'm looking for a shuttle...".
+   - **Delivery:** Button opens WhatsApp for Popoyo Delivery.
+3. **Data Handling:**
+   - **CSV Headers:** `Event Name`, `Subtext`, `Host`, `Category` (Yoga/Food), `Price`, `Reservation` (TRUE/FALSE), `Reso info`, `Date`, `Start`, `End`, `Website link`, `Maps link`.
+   - **Robust Parsing:** Handle capitalization errors in headers (e.g. `price` vs `Price`).
+   - **Text Formatting:** Remove trailing periods from short descriptions.
+
+## Tone & Copy
+- **Voice:** "Built by a friend and fellow tourist." Helpful, authoritative, but casual."
+- **Key Phrases:** "Stay in the know." "What is happening tonight?"
+
+## File Structure
+- `index.html`: Main Event Feed + SEO Text.
+- `services.html`: Transport, ATMs, Delivery info.
+- `favicon.png`: Teal square logo.
+- `social-preview.png`: Open Graph image for WhatsApp/Facebook shares.
+- `.cursorrules`: You are reading it.
